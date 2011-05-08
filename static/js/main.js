@@ -170,7 +170,9 @@ $(window).ready(function () {
                 
                 $('.playing').removeClass('playing');
                 note.tr.addClass('playing');
-                setTimeout(this, 2000 * (note.active ? note.beats : 1));
+                
+                var wait = note.active ? note.beats : (note.rest || 1);
+                setTimeout(this, 2000 * wait);
             });
         },
         load : function (data) {
