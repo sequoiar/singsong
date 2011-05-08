@@ -25,10 +25,7 @@ $(window).ready(function () {
         add : function (i, j, elems) {
             var note = notes.notes[i];
             note.active = true;
-            
-            var tr = note.tr;
-            $('<td>').text(i).appendTo(tr);
-            $('<td>').text({
+            note.note = {
                 8 : 'E4',
                 7 : 'F4',
                 6 : 'G4',
@@ -38,11 +35,23 @@ $(window).ready(function () {
                 2 : 'D3',
                 1 : 'E3',
                 0 : 'F3',
-            }[j]).appendTo(tr);
+            }[j];
             
-            $('<td>').append(
-                $('<input>').attr('type', 'text')
-            ).appendTo(tr);
+            var tr = note.tr;
+            $('<td>').text(i).appendTo(tr);
+            $('<td>').text(note.note).appendTo(tr);
+            
+            function changer () {
+                note.text = $(this).val();
+            }
+            
+            var input = $('<input>')
+                .attr('type', 'text')
+                .change(changer)
+                .keypress(changer)
+            ;
+            
+            $('<td>').append(input).appendTo(tr);
         },
         remove : function (i) {
             var note = notes.notes[i];
@@ -50,6 +59,18 @@ $(window).ready(function () {
                 note.active = false;
                 note.tr.empty();
             }
+        },
+        song : function () {
+            return range(14).reduce(function (acc, i) {
+                var note = notes.notes[i];
+                if (note.active) {
+                    acc.push({
+                        note : note.note,
+                        durations : [ { beats : 0.3, text : note.text } ],
+                    });
+                }
+                return acc;
+            }, []);
         },
     };
     
@@ -119,19 +140,8 @@ $(window).ready(function () {
     });
     
     dnode.connect(function (remote) {
-        remote.sing([
-            {
-                note : 'E3',
-                durations : [ { beats : 0.3, text : 'hello' } ]
-            },
-            {
-                note : 'F#4',
-                durations : [ { beats : 0.3, text : 'cruel' } ]
-            },
-            {
-                note : 'C3',
-                durations : [ { beats : 0.3, text : 'world' } ]
-            },
-        ]);
+        $('#play').click(function () {
+            remote.sing(notes.song());
+        });
     });
 });
