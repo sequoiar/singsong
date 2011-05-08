@@ -1,5 +1,6 @@
 var dnode = require('dnode');
 var $ = require('jquery-browserify');
+var Seq = require('seq');
 
 function range (start, end, step) {
     if (end === undefined) {
@@ -16,6 +17,7 @@ function range (start, end, step) {
 }
 
 $(window).ready(function () {
+    var columns = 50;
     
     var notes = {
         notes : {},
@@ -78,7 +80,7 @@ $(window).ready(function () {
             }
         },
         song : function () {
-            return range(14).reduce(function (acc, i) {
+            return range(columns).reduce(function (acc, i) {
                 var note = notes.notes[i];
                 if (note.active) {
                     acc.push({
@@ -92,13 +94,19 @@ $(window).ready(function () {
             }, []);
         },
         follow : function () {
-            Seq.ap(notes.song).seqEach(function (x) {
+            Seq.ap(range(columns)).seqEach(function (i) {
+                var note = notes.notes[i];
                 
+                $('.playing').removeClass('playing');
+                note.tr.addClass('playing');
+                if (note.active) {
+                    setTimeout(this, note.beats);
+                }
             });
         },
     };
     
-    range(14).forEach(function (i) {
+    range(columns).forEach(function (i) {
         var column = $('<div>')
             .addClass('column')
             .appendTo($('#treble'))

@@ -43,10 +43,14 @@ table#notes tr th {
     text-align: left;
 }
 
+.playing td {
+    background-color: rgb(193,255,76);
+}
+
 #treble {
     background-image: url(/images/treble.png);
     background-repeat: no-repeat;
-    width: 1084px;
+    width: 3750px;
     height: 248px;
     margin-left: 125px;
     padding-top: 46px;
