@@ -41,6 +41,11 @@ $(window).ready(function () {
                             .addClass('note')
                             .appendTo($(this))
                         ;
+                        $('<div>')
+                            .addClass('note-label')
+                            .text(i)
+                            .appendTo($(this))
+                        ;
                     },
                     function () {
                         $(this).empty();
