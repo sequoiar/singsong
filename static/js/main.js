@@ -48,10 +48,38 @@ $(window).ready(function () {
             note.active = true;
             note.note = toNote(j) || j;
             note.beats = 0.1;
+            note.accident = 'natural';
             
             var tr = note.tr;
             $('<td>').text(i).appendTo(tr);
-            $('<td>').text(note.note).appendTo(tr);
+            
+            var accidentals = {
+                A : [ 'natural', 'sharp', 'flat' ],
+                B : [ 'natural', 'flat' ],
+                C : [ 'natural', 'sharp' ],
+                D : [ 'natural', 'sharp', 'flat' ],
+                E : [ 'natural', 'flat' ],
+                F : [ 'natural', 'sharp' ],
+                G : [ 'natural', 'sharp', 'flat' ],
+            };
+            
+            $('<td>')
+                .addClass('note-name')
+                .click(function () {
+                    var key = note.note.charAt(0);
+                    var acc = accidentals[key];
+                    var i = acc.indexOf(note.accident);
+                    note.accident = acc[(i + 1) % acc.length];
+                    
+                    $(this).html(note.note + {
+                        natural : '&#9838;',
+                        flat : '&#9837;',
+                        sharp : '&#9839;',
+                    }[note.accident]);
+                })
+                .html(note.note + '&#9838;')
+                .appendTo(tr)
+            ;
             
             var textInput = (function () {
                 function changer () {
