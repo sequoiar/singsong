@@ -43,6 +43,11 @@ $(window).ready(function () {
                 })
                 .appendTo(target)
             ;
+            $('<div>')
+                .addClass('note-accident')
+                .text('')
+                .appendTo(target)
+            ;
             
             note.cell = target;
             note.active = true;
@@ -58,7 +63,7 @@ $(window).ready(function () {
                 B : [ 'natural', 'flat' ],
                 C : [ 'natural', 'sharp' ],
                 D : [ 'natural', 'sharp', 'flat' ],
-                E : [ 'natural', 'flat' ],
+                E : [ 'natural' ],
                 F : [ 'natural', 'sharp' ],
                 G : [ 'natural', 'sharp', 'flat' ],
             };
@@ -71,11 +76,18 @@ $(window).ready(function () {
                     var i = acc.indexOf(note.accident);
                     note.accident = acc[(i + 1) % acc.length];
                     
-                    $(this).html(note.note + {
+                    var code = {
                         natural : '&#9838;',
                         flat : '&#9837;',
                         sharp : '&#9839;',
-                    }[note.accident]);
+                    }[note.accident];
+                    
+                    $(this).html(note.note + code);
+                    
+                    note.cell
+                        .find('.note-accident')
+                        .html(note.accident === 'natural' ? '' : code)
+                    ;
                 })
                 .html(note.note + '&#9838;')
                 .appendTo(tr)

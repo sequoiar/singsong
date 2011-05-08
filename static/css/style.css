@@ -36,6 +36,12 @@
     cursor: default;
 }
 
+.note-accident {
+    font-size: 32pt;
+    margin-top: -35px;
+    margin-left: -3px;
+}
+
 .note-name {
     cursor: pointer;
 }
