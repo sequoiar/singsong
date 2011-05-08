@@ -176,5 +176,27 @@ $(window).ready(function () {
             remote.sing(notes.song());
             notes.follow();
         });
+        
+        remote.list(function (err, files) {
+            if (err) alert(err)
+            else files.forEach(function (file) {
+                $('<option>')
+                    .text(file)
+                    .val(file)
+                    .appendTo($('#files'))
+                ;
+            });
+        });
+        
+        $('#save').submit(function (ev) {
+            ev.preventDefault();
+            remote.save(
+                $(this.elements.filename).val(),
+                notes.song(),
+                function (err) {
+                    if (err) alert(err)
+                }
+            );
+        });
     });
 });
