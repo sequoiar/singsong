@@ -34,8 +34,10 @@ dnode({
         else {
             fs.readFile(
                 __dirname + '/songs/' + filename + '.json',
-                function (data) {
-                    cb(null, JSON.parse(data));
+                'utf8',
+                function (err, data) {
+                    if (err) cb(err)
+                    else cb(null, JSON.parse(data))
                 }
             );
         }
