@@ -30,17 +30,21 @@ $(window).ready(function () {
             $('<img>')
                 .attr('src', '/images/quarter_up.png')
                 .addClass('note')
+                .click(function () {
+                    target.trigger('toggle');
+                })
                 .appendTo(target)
             ;
             $('<div>')
                 .addClass('note-label')
                 .text(i)
                 .click(function () {
-                    note.trigger('toggle');
+                    target.trigger('toggle');
                 })
                 .appendTo(target)
             ;
             
+            note.cell = target;
             note.active = true;
             note.note = toNote(j) || j;
             note.beats = 0.1;
@@ -79,6 +83,10 @@ $(window).ready(function () {
             var note = notes.notes[i];
             if (note) {
                 note.active = false;
+                if (note.cell) {
+                    note.cell.empty();
+                    note.cell = null;
+                }
                 note.tr.empty();
             }
         },
