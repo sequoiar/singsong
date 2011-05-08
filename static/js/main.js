@@ -194,7 +194,7 @@ $(window).ready(function () {
         notes.notes[i] = { tr : tr };
         cells[i] = {};
         
-        range(12).forEach(function (j) {
+        range(13).forEach(function (j) {
             cells[i][j] = $('<div>')
                 .addClass('cell')
                 .appendTo(column)
@@ -271,17 +271,18 @@ $(window).ready(function () {
 });
 
 var noteMap = {
-    10 : 'C3',
-    9 : 'D3',
-    8 : 'E3',
-    7 : 'F3',
-    6 : 'G3',
-    5 : 'A4',
-    4 : 'B4',
-    3 : 'C4',
-    2 : 'D4',
-    1 : 'E4',
-    0 : 'F4',
+    11 : 'C3',
+    10 : 'D3',
+    9 : 'E3',
+    8 : 'F3',
+    7 : 'G3',
+    6 : 'A4',
+    5 : 'B4',
+    4 : 'C4',
+    3 : 'D4',
+    2 : 'E4',
+    1 : 'F4',
+    0 : 'G4',
 };
 
 function toNote (j) {
