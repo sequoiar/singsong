@@ -1,0 +1,32 @@
+#sidebar {
+    width: 80px;
+    height: 500px;
+    float: left;
+}
+
+#notes {
+    margin-left: 50px;
+}
+
+#play {
+    margin-top: 38px;
+}
+
+#treble {
+    background-image: url(/images/treble.png);
+    background-repeat: no-repeat;
+    width: 1084px;
+    height: 248px;
+    margin-left: 125px;
+    border: 1px red solid;
+    padding-top: 45px;
+}
+
+#base {
+    background-image: url(/images/base.png);
+    background-repeat: no-repeat;
+    width: 1084px;
+    height: 138px;
+    margin-left: 125px;
+    margin-top: 50px;
+}
