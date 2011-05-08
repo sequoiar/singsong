@@ -17,11 +17,49 @@ function range (start, end, step) {
 
 $(window).ready(function () {
     
+    var notes = {
+        notes : {},
+        has : function (i) {
+            return notes.notes[i].active;
+        },
+        add : function (i, j, elems) {
+            var note = notes.notes[i];
+            note.active = true;
+            
+            var tr = note.tr;
+            $('<td>').text(i).appendTo(tr);
+            $('<td>').text({
+                8 : 'E4',
+                7 : 'F4',
+                6 : 'G4',
+                5 : 'A3',
+                4 : 'B3',
+                3 : 'C3',
+                2 : 'D3',
+                1 : 'E3',
+                0 : 'F3',
+            }[j]).appendTo(tr);
+            
+            $('<td>').append(
+                $('<input>').attr('type', 'text')
+            ).appendTo(tr);
+        },
+        remove : function (i) {
+            var note = notes.notes[i];
+            if (note) {
+                note.active = false;
+                note.tr.empty();
+            }
+        },
+    };
+    
     range(14).forEach(function (i) {
         var column = $('<div>')
             .addClass('column')
             .appendTo($('#treble'))
         ;
+        var tr = $('<tr>').appendTo($('#notes'));
+        notes.notes[i] = { tr : tr };
         
         range(10).forEach(function (j) {
             $('<div>')
@@ -29,25 +67,38 @@ $(window).ready(function () {
                 .appendTo(column)
                 .mouseover(function () {
                     $('.moused').removeClass('moused');
-                    $(this).addClass('moused');
+                    if (!notes.has(i)) {
+                        $(this).addClass('moused');
+                    }
                 })
                 .mouseout(function () {
                     $(this).removeClass('moused');
                 })
                 .toggle(
                     function () {
-                        $('<img>')
+                        if (notes.has(i)) return;
+                        
+                        var note = $('<img>')
                             .attr('src', '/images/quarter_up.png')
                             .addClass('note')
                             .appendTo($(this))
                         ;
-                        $('<div>')
+                        var label = $('<div>')
                             .addClass('note-label')
                             .text(i)
+                            .click(function () {
+                                note.trigger('toggle');
+                            })
                             .appendTo($(this))
                         ;
+                        
+                        notes.add(i, j, {
+                            note : note,
+                            label : label,
+                        });
                     },
                     function () {
+                        notes.remove(i);
                         $(this).empty();
                     }
                 )
