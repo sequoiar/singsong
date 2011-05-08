@@ -48,14 +48,22 @@ $(window).ready(function () {
             
             note.cell = target;
             note.active = true;
-            note.note = (toNote(j) || j).replace(/[b#]/,'');
-            note.beats = 0.1;
+            if (typeof j === 'object') {
+                note.note = j.note.replace(/[b#]/, '');
+                note.beats = j.durations[0].beats;
+                
+                var macc = j.note.toString().match(/[b#]/);
+                note.accident = macc
+                    ? { b : 'flat', '#' : 'sharp' }[macc[0]]
+                    : 'natural'
+                ;
+            }
+            else {
+                note.note = toNote(j);
+                note.beats = 0.15;
+                note.accident = 'natural';
+            }
             
-            var macc = j.toString().match(/[b#]/);
-            note.accident = macc
-                ? { b : 'flat', '#' : 'sharp' }[macc[0]]
-                : 'natural'
-            ;
             
             var code = noteCode(note.accident);
             $('<div>')
@@ -173,7 +181,7 @@ $(window).ready(function () {
             Object.keys(data).forEach(function (key, i) {
                 if (data[key].note) {
                     var cell = cells[i][fromNote(data[key].note)];
-                    notes.add(i, data[key].note, cell);
+                    notes.add(i, data[key], cell);
                     
                     $(notes.notes[i].tr.find('input')[0])
                         .val(data[key].durations[0].text)
@@ -276,8 +284,8 @@ var noteMap = {
     9 : 'E3',
     8 : 'F3',
     7 : 'G3',
-    6 : 'A4',
-    5 : 'B4',
+    6 : 'A3',
+    5 : 'B3',
     4 : 'C4',
     3 : 'D4',
     2 : 'E4',
