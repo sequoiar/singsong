@@ -4,12 +4,27 @@
     float: left;
 }
 
-#notes {
-    margin-left: 50px;
+#play {
+    margin-top: 128px;
 }
 
-#play {
-    margin-top: 38px;
+.cell {
+    width: 77px;
+    height: 17px;
+}
+
+.moused {
+    background-color: rgb(255,150,150);
+}
+
+.column {
+    width: 75px;
+    float: left;
+}
+
+.note {
+    margin-top: -105px;
+    margin-left: 17px;
 }
 
 #treble {
@@ -18,8 +33,8 @@
     width: 1084px;
     height: 248px;
     margin-left: 125px;
-    border: 1px red solid;
-    padding-top: 45px;
+    padding-top: 46px;
+    padding-left: 120px;
 }
 
 #base {
