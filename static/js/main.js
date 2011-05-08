@@ -25,6 +25,8 @@ $(window).ready(function () {
             return notes.notes[i].active;
         },
         add : function (i, j, target) {
+            if (j === undefined) return;
+            
             var note = notes.notes[i];
             
             $('<img>')
@@ -51,9 +53,14 @@ $(window).ready(function () {
             
             note.cell = target;
             note.active = true;
-            note.note = toNote(j) || j;
+            note.note = (toNote(j) || j).replace(/[b#]/,'');
             note.beats = 0.1;
-            note.accident = 'natural';
+            
+            var macc = j.toString().match(/[b#]/);
+            note.accident = macc
+                ? { b : 'flat', '#' : 'sharp' }[macc[0]]
+                : 'natural'
+            ;
             
             var tr = note.tr;
             $('<td>').text(i).appendTo(tr);
@@ -73,8 +80,8 @@ $(window).ready(function () {
                 .click(function () {
                     var key = note.note.charAt(0);
                     var acc = accidentals[key];
-                    var i = acc.indexOf(note.accident);
-                    note.accident = acc[(i + 1) % acc.length];
+                    var ii = acc.indexOf(note.accident);
+                    note.accident = acc[(ii + 1) % acc.length];
                     
                     var code = {
                         natural : '&#9838;',
@@ -166,13 +173,15 @@ $(window).ready(function () {
             });
             
             Object.keys(data).forEach(function (key, i) {
-                var cell = cells[i][fromNote(data[key].note)];
-                notes.add(i, data[key].note, cell);
-                
-                $(notes.notes[i].tr.find('input')[0])
-                    .val(data[key].durations[0].text)
-                    .trigger('keypress')
-                ;
+                if (data[key].note) {
+                    var cell = cells[i][fromNote(data[key].note)];
+                    notes.add(i, data[key].note, cell);
+                    
+                    $(notes.notes[i].tr.find('input')[0])
+                        .val(data[key].durations[0].text)
+                        .trigger('keypress')
+                    ;
+                }
             });
         },
     };
@@ -282,8 +291,9 @@ function toNote (j) {
 }
 
 function fromNote (n) {
+    var key = n.replace(/[b#]/, '');
     var keys = Object.keys(noteMap);
     for (var i = 0; i < keys.length; i++) {
-        if (noteMap[keys[i]] === n) return keys[i];
+        if (noteMap[keys[i]] === key) return keys[i];
     }
 }
