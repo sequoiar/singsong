@@ -123,7 +123,11 @@ $(window).ready(function () {
                 var note = notes.notes[i];
                 if (note.active) {
                     acc.push({
-                        note : note.note,
+                        note : note.note.charAt(0) + {
+                            natural : '',
+                            flat : 'b',
+                            sharp : '#',
+                        }[note.accident] + note.note.charAt(1),
                         durations : [
                             { beats : note.beats, text : note.text }
                         ],
