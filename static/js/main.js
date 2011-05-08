@@ -123,6 +123,11 @@ $(window).ready(function () {
             Object.keys(data).forEach(function (key, i) {
                 var cell = cells[i][fromNote(data[key].note)];
                 notes.add(i, data[key].note, cell);
+                
+                $(notes.notes[i].tr.find('input')[0])
+                    .val(data[key].durations[0].text)
+                    .trigger('keypress')
+                ;
             });
         },
     };
