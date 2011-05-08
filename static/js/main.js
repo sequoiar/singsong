@@ -26,6 +26,8 @@ $(window).ready(function () {
             var note = notes.notes[i];
             note.active = true;
             note.note = {
+                10 : 'C3',
+                9 : 'D3',
                 8 : 'E3',
                 7 : 'F3',
                 6 : 'G3',
@@ -36,22 +38,37 @@ $(window).ready(function () {
                 1 : 'E4',
                 0 : 'F4',
             }[j];
+            note.beats = 0.1;
             
             var tr = note.tr;
             $('<td>').text(i).appendTo(tr);
             $('<td>').text(note.note).appendTo(tr);
             
-            function changer () {
-                note.text = $(this).val();
-            }
+            var textInput = (function () {
+                function changer () {
+                    note.text = $(this).val();
+                }
+                
+                return $('<input>')
+                    .attr('type', 'text')
+                    .change(changer)
+                    .keypress(changer)
+                ;
+            })();
+            $('<td>').append(textInput).appendTo(tr);
             
-            var input = $('<input>')
-                .attr('type', 'text')
-                .change(changer)
-                .keypress(changer)
-            ;
-            
-            $('<td>').append(input).appendTo(tr);
+            var beatInput = (function () {
+                function changer () {
+                    note.beats = $(this).val();
+                }
+                return $('<input>')
+                    .attr('type', 'text')
+                    .val(note.beats)
+                    .change(changer)
+                    .keypress(changer)
+                ;
+            })();
+            $('<td>').append(beatInput).appendTo(tr);
         },
         remove : function (i) {
             var note = notes.notes[i];
@@ -66,11 +83,18 @@ $(window).ready(function () {
                 if (note.active) {
                     acc.push({
                         note : note.note,
-                        durations : [ { beats : 0.3, text : note.text } ],
+                        durations : [
+                            { beats : note.beats, text : note.text }
+                        ],
                     });
                 }
                 return acc;
             }, []);
+        },
+        follow : function () {
+            Seq.ap(notes.song).seqEach(function (x) {
+                
+            });
         },
     };
     
@@ -82,7 +106,7 @@ $(window).ready(function () {
         var tr = $('<tr>').appendTo($('#notes'));
         notes.notes[i] = { tr : tr };
         
-        range(10).forEach(function (j) {
+        range(12).forEach(function (j) {
             $('<div>')
                 .addClass('cell')
                 .appendTo(column)
@@ -142,6 +166,7 @@ $(window).ready(function () {
     dnode.connect(function (remote) {
         $('#play').click(function () {
             remote.sing(notes.song());
+            notes.follow();
         });
     });
 });
