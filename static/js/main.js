@@ -101,6 +101,9 @@ $(window).ready(function () {
                         ],
                     });
                 }
+                else {
+                    acc.push({ rest : 0.3 });
+                }
                 return acc;
             }, []);
         },
@@ -110,9 +113,7 @@ $(window).ready(function () {
                 
                 $('.playing').removeClass('playing');
                 note.tr.addClass('playing');
-                if (note.active) {
-                    setTimeout(this, note.beats);
-                }
+                setTimeout(this, note.active ? note.beats : 1);
             });
         },
         load : function (data) {

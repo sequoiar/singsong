@@ -44,7 +44,7 @@ table#notes tr th {
     text-align: left;
 }
 
-.playing td {
+.playing {
     background-color: rgb(193,255,76);
 }
 
