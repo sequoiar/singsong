@@ -26,15 +26,15 @@ $(window).ready(function () {
             var note = notes.notes[i];
             note.active = true;
             note.note = {
-                8 : 'E4',
-                7 : 'F4',
-                6 : 'G4',
-                5 : 'A3',
-                4 : 'B3',
-                3 : 'C3',
-                2 : 'D3',
-                1 : 'E3',
-                0 : 'F3',
+                8 : 'E3',
+                7 : 'F3',
+                6 : 'G3',
+                5 : 'A4',
+                4 : 'B4',
+                3 : 'C4',
+                2 : 'D4',
+                1 : 'E4',
+                0 : 'F4',
             }[j];
             
             var tr = note.tr;
